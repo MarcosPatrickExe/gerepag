@@ -8,7 +8,8 @@ class ClientProfitabilityScreen extends StatefulWidget {
   const ClientProfitabilityScreen({super.key});
 
   @override
-  State<ClientProfitabilityScreen> createState() => _ClientProfitabilityScreenState();
+  State<ClientProfitabilityScreen> createState() =>
+      _ClientProfitabilityScreenState();
 }
 
 class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
@@ -24,9 +25,14 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
     final Map<String, _ClientFinancials> clientMap = {};
 
     for (final t in transactions) {
-      final clientName = t.title.trim().isNotEmpty ? t.title.trim() : 'Não Identificado';
+      final clientName = t.title.trim().isNotEmpty
+          ? t.title.trim()
+          : 'Não Identificado';
 
-      clientMap.putIfAbsent(clientName, () => _ClientFinancials(name: clientName));
+      clientMap.putIfAbsent(
+        clientName,
+        () => _ClientFinancials(name: clientName),
+      );
 
       if (t.type == TransactionType.income) {
         clientMap[clientName]!.revenue += t.amount;
@@ -46,19 +52,24 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
     final totalRevenue = clientList.fold(0.0, (sum, c) => sum + c.revenue);
     final totalExpenses = clientList.fold(0.0, (sum, c) => sum + c.expenses);
     final totalProfit = totalRevenue - totalExpenses;
-    final marginPercent = totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0.0;
+    final marginPercent = totalRevenue > 0
+        ? (totalProfit / totalRevenue) * 100
+        : 0.0;
 
     return Scaffold(
       backgroundColor: const Color(0xFF0F172A),
       appBar: AppBar(
-        title: const Text('Rentabilidade por Cliente & Projeto', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Rentabilidade por Cliente & Projeto',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: const Color(0xFF1E293B),
         elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Banner de Métricas Globais
             Container(
@@ -84,20 +95,37 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildMetricTile('Receita Total', 'R\$ ${totalRevenue.toStringAsFixed(2)}', Colors.greenAccent),
-                      _buildMetricTile('Custo Operacional', 'R\$ ${totalExpenses.toStringAsFixed(2)}', Colors.redAccent),
-                      _buildMetricTile('Margem Global', '${marginPercent.toStringAsFixed(1)}%', Colors.cyanAccent),
+                      _buildMetricTile(
+                        'Receita Total',
+                        'R\$ ${totalRevenue.toStringAsFixed(2)}',
+                        Colors.greenAccent,
+                      ),
+                      _buildMetricTile(
+                        'Custo Operacional',
+                        'R\$ ${totalExpenses.toStringAsFixed(2)}',
+                        Colors.redAccent,
+                      ),
+                      _buildMetricTile(
+                        'Margem Global',
+                        '${marginPercent.toStringAsFixed(1)}%',
+                        Colors.cyanAccent,
+                      ),
                     ],
                   ),
                   const Divider(color: Colors.white12, height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Lucro Geral da Operação:', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                      const Text(
+                        'Lucro Geral da Operação:',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
                       Text(
                         'R\$ ${totalProfit.toStringAsFixed(2)}',
                         style: TextStyle(
-                          color: totalProfit >= 0 ? Colors.greenAccent : Colors.redAccent,
+                          color: totalProfit >= 0
+                              ? Colors.greenAccent
+                              : Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -129,7 +157,11 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
 
             const Text(
               'Ranking de Margem de Contribuição',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -138,7 +170,10 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(32.0),
-                  child: Text('Nenhum cliente ou projeto encontrado.', style: TextStyle(color: Colors.grey)),
+                  child: Text(
+                    'Nenhum cliente ou projeto encontrado.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
               )
             else
@@ -158,11 +193,13 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
                       color: const Color(0xFF1E293B),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isProfitable ? Colors.greenAccent.withOpacity(0.2) : Colors.redAccent.withOpacity(0.2),
+                        color: isProfitable
+                            ? Colors.greenAccent.withOpacity(0.2)
+                            : Colors.redAccent.withOpacity(0.2),
                       ),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,30 +207,47 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundColor: isProfitable ? Colors.green.shade900 : Colors.red.shade900,
+                                  backgroundColor: isProfitable
+                                      ? Colors.green.shade900
+                                      : Colors.red.shade900,
                                   radius: 16,
                                   child: Text(
                                     '#${index + 1}',
-                                    style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
                                   client.name,
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ],
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: (isProfitable ? Colors.green : Colors.red).withOpacity(0.2),
+                                color:
+                                    (isProfitable ? Colors.green : Colors.red)
+                                        .withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
                                 '${margin.toStringAsFixed(1)}% Margem',
                                 style: TextStyle(
-                                  color: isProfitable ? Colors.greenAccent : Colors.redAccent,
+                                  color: isProfitable
+                                      ? Colors.greenAccent
+                                      : Colors.redAccent,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -205,12 +259,26 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Receita: R\$ ${client.revenue.toStringAsFixed(2)}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                            Text('Custo: R\$ ${client.expenses.toStringAsFixed(2)}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                            Text(
+                              'Receita: R\$ ${client.revenue.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              'Custo: R\$ ${client.expenses.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
                             Text(
                               'Lucro: R\$ ${client.profit.toStringAsFixed(2)}',
                               style: TextStyle(
-                                color: isProfitable ? Colors.greenAccent : Colors.redAccent,
+                                color: isProfitable
+                                    ? Colors.greenAccent
+                                    : Colors.redAccent,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -221,9 +289,16 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: LinearProgressIndicator(
-                            value: client.revenue > 0 ? (client.profit.clamp(0, client.revenue) / client.revenue) : 0,
+                            value: client.revenue > 0
+                                ? (client.profit.clamp(0, client.revenue) /
+                                      client.revenue)
+                                : 0,
                             backgroundColor: Colors.redAccent.withOpacity(0.3),
-                            valueColor: AlwaysStoppedAnimation<Color>(isProfitable ? Colors.greenAccent : Colors.redAccent),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              isProfitable
+                                  ? Colors.greenAccent
+                                  : Colors.redAccent,
+                            ),
                             minHeight: 6,
                           ),
                         ),
@@ -240,11 +315,18 @@ class _ClientProfitabilityScreenState extends State<ClientProfitabilityScreen> {
 
   Widget _buildMetricTile(String label, String value, Color color) {
     return Column(
-      crossAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(color: Colors.grey, fontSize: 11)),
         const SizedBox(height: 4),
-        Text(value, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14)),
+        Text(
+          value,
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
       ],
     );
   }

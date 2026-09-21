@@ -8,6 +8,16 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+val requiredSigningProperties = listOf(
+    "keyAlias",
+    "keyPassword",
+    "storeFile",
+    "storePassword",
+)
+val hasReleaseSigning = requiredSigningProperties.all {
+    !keystoreProperties[it]?.toString().isNullOrBlank()
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -54,10 +64,10 @@ android {
             val storeFileProp = keystoreProperties["storeFile"]?.toString()
             val storePasswordProp = keystoreProperties["storePassword"]?.toString()
 
-            if (keyAliasProp != null && keyPasswordProp != null && storeFileProp != null && storePasswordProp != null) {
+            if (hasReleaseSigning) {
                 keyAlias = keyAliasProp
                 keyPassword = keyPasswordProp
-                storeFile = file(storeFileProp)
+                storeFile = rootProject.file(storeFileProp!!)
                 storePassword = storePasswordProp
             }
         }
@@ -65,14 +75,23 @@ android {
 
     buildTypes {
         getByName("release") {
-            if (keystoreProperties.containsKey("keyAlias")) {
+            if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
-            } else {
-                signingConfig = signingConfigs.getByName("debug")
             }
             isMinifyEnabled = false
             isShrinkResources = false
         }
+    }
+}
+
+gradle.taskGraph.whenReady {
+    val releaseRequested = allTasks.any {
+        it.path.startsWith(":app:") && it.name.contains("Release", ignoreCase = true)
+    }
+    if (releaseRequested && !hasReleaseSigning) {
+        throw GradleException(
+            "Assinatura release ausente. Configure android/key.properties e a upload keystore.",
+        )
     }
 }
 

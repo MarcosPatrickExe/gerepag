@@ -43,3 +43,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android signing and local credentials
+/android/key.properties
+/android/*.jks
+/android/*.keystore
+/android/app/*.jks
+/android/app/*.keystore
+*.p12
+*.pfx
+
+# Downloaded credentials, private exports and generated source dumps
+client_secret_*.json
+bancodedadosfirebase.json
+chavedoandroidfirebase/
+gerepague_todos_os_arquivos.txt

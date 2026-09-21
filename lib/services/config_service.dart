@@ -7,26 +7,19 @@ class ConfigService {
 
   static const String _geminiKey = 'gemini_api_key';
   static const String _openaiKey = 'openai_api_key';
-  static const String _providerKey = 'ai_provider_active'; // 'gemini' ou 'openai'
+  static const String _providerKey = 'ai_provider_active';
   static const String _autoBusinessAiKey = 'auto_business_ai';
 
   Future<List<String>> getGeminiApiKeys() async {
     final prefs = await SharedPreferences.getInstance();
-    final key = prefs.getString(_geminiKey);
-    List<String> keys = [];
-    if (key != null && key.isNotEmpty && key != 'API_KEY_AQUI') {
-      keys.add(key.trim());
-    }
-    // Chaves padrão fornecidas pelo usuário para redundância
-    keys.add('AIzaSyAGyJXTanZ-8PFfw9ZGkyIBBilmQfzz5Zs');
-    keys.add('AIzaSyCvLWubEKLmgyL5pPhrNfHLhO6FmuNZcc4');
-    
-    return keys.toSet().toList(); // Remover duplicatas
+    final key = prefs.getString(_geminiKey)?.trim();
+    if (key == null || key.isEmpty || key == 'API_KEY_AQUI') return [];
+    return [key];
   }
 
   Future<String?> getGeminiApiKey() async {
     final keys = await getGeminiApiKeys();
-    return keys.first;
+    return keys.isEmpty ? null : keys.first;
   }
 
   Future<void> setGeminiApiKey(String key) async {
@@ -36,8 +29,7 @@ class ConfigService {
 
   Future<String?> getOpenAIApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    final key = prefs.getString(_openaiKey);
-    return key?.trim();
+    return prefs.getString(_openaiKey)?.trim();
   }
 
   Future<void> setOpenAIApiKey(String key) async {
@@ -67,12 +59,9 @@ class ConfigService {
 
   Future<bool> hasAiKey() async {
     final provider = await getAiProvider();
-    if (provider == 'gemini') {
-      final key = await getGeminiApiKey();
-      return key != null && key.isNotEmpty && key != 'API_KEY_AQUI';
-    } else {
-      final key = await getOpenAIApiKey();
-      return key != null && key.isNotEmpty;
-    }
+    final key = provider == 'gemini'
+        ? await getGeminiApiKey()
+        : await getOpenAIApiKey();
+    return key != null && key.isNotEmpty && key != 'API_KEY_AQUI';
   }
 }

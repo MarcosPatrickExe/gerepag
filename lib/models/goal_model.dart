@@ -53,6 +53,10 @@ class GoalModel {
     );
   }
 
-  double get progress => (currentAmount / targetAmount).clamp(0.0, 1.0);
+  double get progress {
+    if (targetAmount <= 0) return 0.0;
+    return (currentAmount / targetAmount).clamp(0.0, 1.0);
+  }
+
   bool get isReached => currentAmount >= targetAmount;
 }
