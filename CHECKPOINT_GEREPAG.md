@@ -10,8 +10,8 @@ Trabalhar exclusivamente em ambiente cloud, usando o GitHub como fonte de verdad
 
 - Repositório: `https://github.com/MarcosPatrickExe/gerepag`.
 - Branch padrão observada: `main`.
-- Commit remoto observado: `98e57331830d9f2e5c8d37b0d43c3a264a2eb0a2`.
-- Mensagem do commit: `configurando projeto no meu repositorio`.
+- Commit da `main` observado: `599fc12ea5cf6b15f5573daf0f607ebb75355dd6`.
+- A branch de trabalho `codex/security-ci-docs` foi publicada com o commit `a753953`.
 - O commit local anteriormente citado, `61aa41e`, não foi encontrado no GitHub.
 - Não foram encontradas outras branches remotas durante a auditoria inicial.
 - A integração GitHub voltou a permitir escrita em 21 de setembro de 2026.
@@ -131,7 +131,7 @@ Secrets planejados para o GitHub Actions:
 - `ANDROID_KEY_PASSWORD`
 - `ANDROID_STORE_PASSWORD`
 
-Variável opcional planejada:
+Variável obrigatória para billing em builds de produção:
 
 - `GEREPAG_BILLING_API_BASE_URL`
 
@@ -139,21 +139,27 @@ Se o aplicativo já tiver sido publicado, não gerar outra chave antes de locali
 
 ## 8. Validações e testes
 
-- Não há pasta/suíte Dart `test/` versionada.
-- Existe apenas a estrutura padrão de testes nativos iOS/macOS.
-- Um arquivo antigo `analyze_res.txt` indicava grande quantidade de dependências desatualizadas e problemas do analisador, mas não constituía uma validação atual confiável.
-- A tentativa de instalar/executar Flutter no runner cloud foi interrompida pelo ambiente de segurança quando a ferramenta tentou acessar metadados internos da instância.
-- Portanto, não se deve afirmar que `flutter analyze`, testes ou builds passaram.
-- O workflow preparado deve executar `flutter pub get`, `flutter analyze`, testes quando existirem, build de APK debug e varredura de segredos em um runner GitHub Actions.
+Validações locais executadas em 21 de setembro de 2026 com Flutter 3.41.8, Dart 3.11.5 e Java 17:
 
-## 9. Alterações preparadas, mas ainda não enviadas ao GitHub
+- `flutter pub get --enforce-lockfile`: aprovado depois da atualização reprodutível do lockfile.
+- `flutter analyze --no-fatal-infos --no-fatal-warnings`: aprovado com zero erros, 189 warnings e 318 infos.
+- `flutter test --no-pub`: 10 testes unitários/de widget aprovados.
+- `flutter build web --debug --no-pub`: aprovado.
+- `flutter build web --release --no-pub`: aprovado.
+- `flutter build apk --debug --no-pub`: aprovado.
+- `flutter build appbundle --release --no-pub` sem chave: bloqueado corretamente com mensagem de assinatura ausente.
 
-Foi criado no ambiente cloud o commit local:
+Os warnings e infos do analisador continuam no roadmap de manutenção. O GitHub Actions ainda precisa ser executado após a abertura do pull request.
 
-- Commit: `2f53985`
-- Mensagem: `chore: harden secrets and add cloud build workflows`
+## 9. Alterações publicadas para revisão
 
-Principais mudanças desse commit:
+O pacote de mudanças originalmente descrito no commit cloud `2f53985` não estava disponível nesta máquina e foi reconstruído, validado e publicado:
+
+- Branch: `codex/security-ci-docs`.
+- Commit: `a753953`.
+- Mensagem: `chore: harden release pipeline and add tests`.
+
+Principais mudanças:
 
 - Novo `README.md` específico do GerePag.
 - Novo `PROJECT.md` com produto, arquitetura, integrações e riscos.
@@ -168,10 +174,12 @@ Principais mudanças desse commit:
 - Remoção do fallback de assinatura release para debug.
 - Expansão do `.gitignore` para bloquear keystores, credenciais, exports e dumps.
 - Exclusão da exportação Firebase, arquivo OAuth baixado, cópia duplicada de configuração e dump agregado do código.
+- Correção dos quatro erros de compilação em `client_profitability_screen.dart`.
+- Proteção contra divisão por zero no progresso de metas.
+- Dez testes unitários/de widget cobrindo modelos financeiros e KPI.
+- Atualização do lockfile para o SDK Flutter validado.
 
-O commit não está no GitHub. A tentativa de criar/enviar a branch `codex/cloud-audit-ci` foi recusada com HTTP 403. A branch `main` permaneceu intacta.
-
-Uma cópia segura do estado preparado foi preservada como `gerepag-cloud-audit-2f53985.tar.gz`. Não usar um patch Git contendo exclusões sensíveis, pois patches incluem o conteúdo removido.
+A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanhar o CI e revisar antes do merge.
 
 ## 10. Roadmap priorizado
 
@@ -183,7 +191,7 @@ Uma cópia segura do estado preparado foi preservada como `gerepag-cloud-audit-2
 - [ ] Garantir acesso a Actions/Workflows quando disponível.
 - [x] Reconectar o GitHub no ChatGPT após ajustar a instalação.
 - [x] Testar criação de uma branch segura.
-- [ ] Enviar o commit preparado em branch separada.
+- [x] Enviar o commit preparado em branch separada.
 - [ ] Abrir pull request para `main`.
 - [ ] Acompanhar o CI e corrigir falhas.
 - [ ] Fazer merge somente após revisão/autorização do usuário.
@@ -202,9 +210,9 @@ Uma cópia segura do estado preparado foi preservada como `gerepag-cloud-audit-2
 ### P1 — CI, build e release Android
 
 - [ ] Rodar a primeira execução do Flutter CI.
-- [ ] Corrigir todos os erros de compilação/análise.
+- [x] Corrigir todos os erros de compilação/análise.
 - [ ] Reduzir warnings progressivamente.
-- [ ] Confirmar build do APK debug.
+- [x] Confirmar build do APK debug.
 - [ ] Localizar a upload keystore original.
 - [ ] Confirmar alias e senhas.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
@@ -237,7 +245,7 @@ Uma cópia segura do estado preparado foi preservada como `gerepag-cloud-audit-2
 
 ### P1 — Testes
 
-- [ ] Criar estrutura `test/`.
+- [x] Criar estrutura `test/`.
 - [ ] Testar cálculos financeiros, parcelamentos e arredondamentos.
 - [ ] Testar filtros de datas e fuso horário.
 - [ ] Testar planos e limites de uso.
