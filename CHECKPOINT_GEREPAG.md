@@ -14,8 +14,9 @@ Trabalhar exclusivamente em ambiente cloud, usando o GitHub como fonte de verdad
 - Mensagem do commit: `configurando projeto no meu repositorio`.
 - O commit local anteriormente citado, `61aa41e`, não foi encontrado no GitHub.
 - Não foram encontradas outras branches remotas durante a auditoria inicial.
-- A integração GitHub consegue ler o repositório, mas operações de escrita retornaram `403 Resource not accessible by integration`.
-- A permissão do aplicativo GitHub dentro do ChatGPT está configurada como `Permitir todas as ações`; o bloqueio está na instalação/autorização do aplicativo no GitHub.
+- A integração GitHub voltou a permitir escrita em 21 de setembro de 2026.
+- A branch `docs/checkpoint-gerepag` foi criada e este checkpoint foi enviado com sucesso.
+- A permissão do aplicativo GitHub dentro do ChatGPT está configurada como `Permitir todas as ações`.
 
 ## 3. Visão do produto e regra de negócio
 
@@ -176,12 +177,12 @@ Uma cópia segura do estado preparado foi preservada como `gerepag-cloud-audit-2
 
 ### P0 — Liberar acesso GitHub
 
-- [ ] Configurar a instalação do aplicativo GitHub para acessar `MarcosPatrickExe/gerepag`.
-- [ ] Garantir `Contents: read/write`.
+- [x] Configurar a instalação do aplicativo GitHub para acessar `MarcosPatrickExe/gerepag`.
+- [x] Garantir `Contents: read/write`.
 - [ ] Garantir `Pull requests: read/write`.
 - [ ] Garantir acesso a Actions/Workflows quando disponível.
-- [ ] Reconectar o GitHub no ChatGPT após ajustar a instalação.
-- [ ] Testar criação de uma branch descartável/segura.
+- [x] Reconectar o GitHub no ChatGPT após ajustar a instalação.
+- [x] Testar criação de uma branch segura.
 - [ ] Enviar o commit preparado em branch separada.
 - [ ] Abrir pull request para `main`.
 - [ ] Acompanhar o CI e corrigir falhas.
