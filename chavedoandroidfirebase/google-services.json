@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "694627493774",
+    "firebase_url": "https://financeiroapp-8b809-default-rtdb.firebaseio.com",
+    "project_id": "financeiroapp-8b809",
+    "storage_bucket": "financeiroapp-8b809.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694627493774:android:7aa5c41dc837cc44e5e6df",
+        "android_client_info": {
+          "package_name": "com.real.finance.control"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694627493774-ofmile3snkestdt2ru4p49epa2ieks6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-ugnn7FSoHL6_2gDkz6MKnJJtVtZb91A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694627493774-ofmile3snkestdt2ru4p49epa2ieks6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

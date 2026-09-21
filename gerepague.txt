@@ -1,0 +1,47 @@
+Briefing de Produto & Marketing: GerePag 🚀
+Este documento serve como um guia completo sobre o GerePag (GEREPAGUE). Ele foi estruturado para ser copiado e colado em qualquer Inteligência Artificial de marketing (como Gemini, ChatGPT, Claude) para criar copies de anúncios, roteiros de vídeo, e-mails de vendas, posts de redes sociais e landing pages.
+
+1. Visão Geral do Produto
+O GerePag é um copiloto financeiro inteligente que une a robustez de dados de ERPs (com integração nativa ao Omie ERP) com a agilidade da Inteligência Artificial. Ele traduz planilhas e relatórios complexos em dashboards visuais bonitos e fornece ferramentas automatizadas de cobrança, negociação de dívidas e projeção de caixa.
+
+Slogan Sugerido: "O controle financeiro que a sua empresa precisa, com a inteligência que você não sabia que existia."
+
+2. A Proposta de Valor Principal
+Eliminar o tempo desperdiçado com digitação manual de notas (via Scanner OCR), reduzir a inadimplência sem desgaste no relacionamento com o cliente (via IA de Cobrança amigável "Glauber") e dar clareza para tomadas de decisão estratégica (via Simulador DRE "What-If").
+
+3. Segmentação por Nichos (Os 4 Públicos-Alvo)
+O aplicativo se adapta dinamicamente para 4 perfis de usuários durante o onboarding:
+
+Nicho A: Autônomos & Freelancers (B2C/B2B Leve)
+Perfil: Advogados, arquitetos, designers, médicos e prestadores de serviços individuais.
+Dores: Inadimplência de clientes (vergonha de cobrar); desorganização de recibos para o imposto de renda.
+Solução GerePag: Lembretes de cobrança automáticos e gentis criados por IA; Scanner de recibos rápido; Controle de metas financeiras e cartões de crédito.
+Gatilho Mental: Liberdade e Paz de Espírito. Cobrar clientes sem parecer chato.
+Nicho B: Pequenas e Médias Empresas - PMEs (B2B)
+Perfil: Empresas que utilizam o ERP Omie, mas acham o sistema complexo e confuso de navegar.
+Dores: Falta de previsibilidade de fluxo de caixa; dificuldade de ler o DRE nativo; medo de tomar decisões ruins.
+Solução GerePag: Integração simples com Omie; Dashboards visuais limpos de Receitas, Despesas e DRE; Simulador DRE "What-If" para prever o impacto de cortes ou investimentos antes de realizá-los.
+Gatilho Mental: Segurança e Lucratividade. Decisões financeiras baseadas em dados visuais simples.
+Nicho C: BPO Financeiro & Contadores (B2B High-Ticket)
+Perfil: Agências ou profissionais terceirizados que cuidam do financeiro de vários clientes.
+Dores: Sobrecarga de trabalho operacional; digitação manual infinita de contas a pagar no ERP; dificuldade de mostrar valor para os clientes.
+Solução GerePag: Consolidação Multi-Empresas (Multi-Omie) em uma tela de Holding; Scanner OCR em lote para processar boletos sem digitação; Relatórios executivos em PDF/CSV com 1 clique para mandar aos clientes.
+Gatilho Mental: Escala e Produtividade. Gerenciar o dobro de clientes na metade do tempo.
+Nicho D: Infoprodutores & Afiliados (Mercado Digital)
+Perfil: Vendedores de cursos, e-books e mentorias em plataformas como Hotmart, Kiwify, Eduzz.
+Dores: Alta taxa de abandono de carrinho, boletos vencidos e Pix gerados que não foram pagos (perda de 30% a 50% do faturamento).
+Solução GerePag: Alertas de vendas falhas integrados; Roteiros de recuperação inteligentes criados por IA para o time comercial enviar direto no WhatsApp do comprador, aumentando as taxas de conversão de carrinhos perdidos.
+Gatilho Mental: ROI Imediato. Recuperação de receita que estava perdida na mesa.
+4. Funcionalidades de Destaque (Features)
+Glauber AI (Cobrança & Negociação Inteligente): Redige roteiros de cobrança amigáveis ou propostas de renegociação de prazos altamente persuasivas e personalizadas. O usuário apenas copia e envia no WhatsApp do devedor.
+Scanner OCR: Processa comprovantes e boletos via foto ou PDF, extraindo valores, datas de vencimento e categorias instantaneamente, alimentando o financeiro sem digitação.
+Simulador DRE "What-If": Permite arrastar sliders de faturamento, impostos e custos fixos (Opex/Cmv) para simular instantaneamente o lucro líquido futuro da empresa.
+Modo Holding (Multi-Omie): Permite sincronizar múltiplas contas do ERP Omie e alternar entre empresas ou consolidar todos os saldos e faturamentos em uma única tela.
+5. Estrutura de Planos e Preços
+Plano Grátis: Acesso ao Dashboard básico, limite de 1 conta Omie, 3 notas OCR e 2 negociações por IA por mês.
+Plano PRO (Foco em PME/Freelancers):
+Valor: R$ 149/mês (ou R$ 1.190/ano).
+Benefícios: IA Ilimitada, Scanner OCR Ilimitado, Relatórios PDF/CSV, Simulador DRE liberado.
+Plano Business (Foco em BPO Financeiro/Grupos):
+Valor: R$ 299/mês (ou R$ 2.490/ano).
+Benefícios: Multi-Omie (até 3 empresas), Gestão de Acessos de Equipe (Sócios/Colaboradores), Alertas de anomalias prioritários.
