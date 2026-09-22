@@ -4,18 +4,16 @@
 
 ## 1. Objetivo da continuidade
 
-Trabalhar exclusivamente em ambiente cloud, usando o GitHub como fonte de verdade. Analisar e evoluir o aplicativo Flutter/Dart, preservar a regra de negócio, melhorar segurança e arquitetura, automatizar validações e gerar AAB Android assinado. Toda alteração deve ocorrer em branch separada e por pull request; não alterar diretamente a `main`.
+Usar o GitHub como fonte de verdade e manter a cópia local sincronizada com ele. Analisar e evoluir o aplicativo Flutter/Dart, preservar a regra de negócio, melhorar segurança e arquitetura, automatizar validações e gerar AAB Android assinado. Para mudanças futuras, preferir branch e pull request; a integração de segurança e CI descrita neste documento já foi revisada e integrada à `main`.
 
 ## 2. Estado remoto confirmado
 
 - Repositório: `https://github.com/MarcosPatrickExe/gerepag`.
 - Branch padrão observada: `main`.
-- Commit da `main` observado: `599fc12ea5cf6b15f5573daf0f607ebb75355dd6`.
-- A branch de trabalho `codex/security-ci-docs` foi publicada com o commit `a753953`.
-- O commit local anteriormente citado, `61aa41e`, não foi encontrado no GitHub.
-- Não foram encontradas outras branches remotas durante a auditoria inicial.
+- Commit atual de `main`: `d851f83b26046969d0a43bd7bc3a5eb93b474cf1`.
+- O pacote de segurança, CI, documentação e testes foi integrado por fast-forward em 21 de setembro de 2026.
+- A cópia local principal está em `main` e sincronizada com `origin/main` nesse mesmo commit.
 - A integração GitHub voltou a permitir escrita em 21 de setembro de 2026.
-- A branch `docs/checkpoint-gerepag` foi criada e este checkpoint foi enviado com sucesso.
 - A permissão do aplicativo GitHub dentro do ChatGPT está configurada como `Permitir todas as ações`.
 
 ## 3. Visão do produto e regra de negócio
@@ -114,14 +112,16 @@ O cliente Flutter criava e consultava sessões diretamente na API Stripe usando 
 
 ## 7. Android, assinatura e AAB
 
-- `applicationId` e namespace observados: `com.real.finance.control`.
-- O `google-services.json` Android atual utiliza o mesmo package name.
-- Existe comentário no Gradle sugerindo mudança futura para `com.patrickson.gerepag`; isso precisa ser decidido antes de publicação/migração.
+- O app GerePag já existente no Play Console usa o package name `com.marcos.gurgel.gerepag`.
+- O código Android e o Firebase Android atuais ainda usam `com.real.finance.control`.
+- Decisão tomada: reutilizar o app existente no Play Console. Antes de um AAB de produção, migrar em conjunto `applicationId`, namespace, pacotes Kotlin e configuração Firebase para `com.marcos.gurgel.gerepag`.
+- Não enviar AAB com `com.real.finance.control` ao cadastro existente do Play Console: ele seria recusado por package name diferente.
 - O bundle identifier iOS observado é `com.antigravity.appfinancerio`.
 - A configuração Firebase gerada contém Web e Android, mas não apresenta configuração iOS completa.
 - Não existe upload keystore versionada, o que é correto.
 - Não existe `android/key.properties` versionado.
-- Não foi possível confirmar se a upload keystore original está guardada fora do repositório.
+- A upload keystore original está perdida. Uma nova upload keystore externa ao Git foi criada e o certificado PEM foi enviado em uma solicitação de redefinição no Play Console em 21 de setembro de 2026; aguardar a data/hora de ativação informada pelo Google antes de enviar novos artefatos.
+- Não registrar neste repositório caminho, senha, arquivo da keystore ou certificado PEM. Não usar a opção de mudar a chave de assinatura do app para esta recuperação.
 - A configuração original permitia fallback de release para assinatura debug; isso foi corrigido no commit cloud preparado.
 
 Secrets planejados para o GitHub Actions:
@@ -135,7 +135,7 @@ Variável obrigatória para billing em builds de produção:
 
 - `GEREPAG_BILLING_API_BASE_URL`
 
-Se o aplicativo já tiver sido publicado, não gerar outra chave antes de localizar a upload key original ou verificar o processo de redefinição na Play Console.
+O próximo AAB deve ser assinado com a nova upload keystore somente após a redefinição ser ativada no Play Console.
 
 ## 8. Validações e testes
 
@@ -149,15 +149,13 @@ Validações locais executadas em 21 de setembro de 2026 com Flutter 3.41.8, Dar
 - `flutter build apk --debug --no-pub`: aprovado.
 - `flutter build appbundle --release --no-pub` sem chave: bloqueado corretamente com mensagem de assinatura ausente.
 
-Os warnings e infos do analisador continuam no roadmap de manutenção. O GitHub Actions ainda precisa ser executado após a abertura do pull request.
+Os warnings e infos do analisador continuam no roadmap de manutenção. Os workflows já estão em `main`; confirmar as execuções no GitHub Actions e corrigir eventuais falhas.
 
-## 9. Alterações publicadas para revisão
+## 9. Alterações integradas na main
 
 O pacote de mudanças originalmente descrito no commit cloud `2f53985` não estava disponível nesta máquina e foi reconstruído, validado e publicado:
 
-- Branch: `codex/security-ci-docs`.
-- Commit: `a753953`.
-- Mensagem: `chore: harden release pipeline and add tests`.
+- Commits integrados: `a753953` (`chore: harden release pipeline and add tests`) e `d851f83` (`docs: update validation checkpoint`).
 
 Principais mudanças:
 
@@ -179,7 +177,7 @@ Principais mudanças:
 - Dez testes unitários/de widget cobrindo modelos financeiros e KPI.
 - Atualização do lockfile para o SDK Flutter validado.
 
-A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanhar o CI e revisar antes do merge.
+A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova upload key, migração do package Android/Firebase, validação em emulador e geração do AAB.
 
 ## 10. Roadmap priorizado
 
@@ -192,9 +190,8 @@ A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanha
 - [x] Reconectar o GitHub no ChatGPT após ajustar a instalação.
 - [x] Testar criação de uma branch segura.
 - [x] Enviar o commit preparado em branch separada.
-- [ ] Abrir pull request para `main`.
+- [x] Integrar as alterações revisadas na `main`.
 - [ ] Acompanhar o CI e corrigir falhas.
-- [ ] Fazer merge somente após revisão/autorização do usuário.
 
 ### P0 — Resposta ao incidente
 
@@ -213,11 +210,17 @@ A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanha
 - [x] Corrigir todos os erros de compilação/análise.
 - [ ] Reduzir warnings progressivamente.
 - [x] Confirmar build do APK debug.
-- [ ] Localizar a upload keystore original.
-- [ ] Confirmar alias e senhas.
+- [x] Confirmar o package do app existente no Play Console: `com.marcos.gurgel.gerepag`.
+- [x] Decidir reutilizar o app existente no Play Console.
+- [x] Gerar nova upload keystore externa ao Git e solicitar redefinição da chave de upload.
+- [ ] Aguardar a ativação da nova chave de upload no Play Console.
+- [ ] Migrar package Android, namespace e código Kotlin para `com.marcos.gurgel.gerepag`.
+- [ ] Criar/cadastrar a configuração Firebase Android para `com.marcos.gurgel.gerepag` e substituir `google-services.json`.
+- [ ] Criar `android/key.properties` somente na máquina local, fora do Git.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
 - [ ] Executar o workflow manual de AAB.
 - [ ] Verificar a assinatura do AAB.
+- [ ] Executar o app em emulador Android e validar login, Firebase, navegação e funções prioritárias.
 - [ ] Testar o artefato em aparelho/faixa interna da Play Console.
 - [ ] Configurar proteção da `main` exigindo CI aprovado.
 
@@ -267,7 +270,7 @@ A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanha
 
 ### P2 — Plataformas e produto
 
-- [ ] Decidir o application ID Android definitivo.
+- [x] Decidir o application ID Android alvo: `com.marcos.gurgel.gerepag`.
 - [ ] Configurar Firebase iOS corretamente.
 - [ ] Revisar bundle ID iOS.
 - [ ] Testar FCM, biometria, câmera, arquivos e home widget em dispositivos reais.
@@ -276,11 +279,9 @@ A `main` permaneceu intacta. A próxima etapa é abrir o pull request, acompanha
 
 ## 11. Próxima ação recomendada
 
-1. Corrigir a instalação/permissões do aplicativo GitHub.
-2. Informar no chat: `já reconectei o GitHub`.
-3. Testar uma criação de branch antes de qualquer outra mutação.
-4. Publicar `codex/cloud-audit-ci` e abrir PR.
-5. Rodar CI.
+1. Iniciar um emulador Android e executar a versão de desenvolvimento para validar os fluxos essenciais.
+2. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido).
+3. Em paralelo, preparar a migração Android/Firebase para `com.marcos.gurgel.gerepag`; não fazer upload à Play Store antes de concluir e validar essa migração.
 6. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
 
 ## 12. Instrução para a próxima conversa/agente

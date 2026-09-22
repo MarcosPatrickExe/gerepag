@@ -64,11 +64,11 @@ Preços e limites ainda aparecem em múltiplos pontos e precisam ser centralizad
 
 ## Identidade de plataforma
 
-- Android atual: `com.real.finance.control`.
-- Firebase Android atual: `com.real.finance.control`.
+- App GerePag existente no Play Console: `com.marcos.gurgel.gerepag`.
+- Android e Firebase Android atuais no código: `com.real.finance.control`.
 - iOS atual: `com.antigravity.appfinancerio`.
 
-Não altere esses identificadores sem uma decisão de migração, pois eles afetam Firebase, lojas, links e assinatura.
+Decisão de publicação: reutilizar o app existente no Play Console. Portanto, antes da publicação Android, migrar em conjunto o `applicationId`, namespace, fontes Kotlin e Firebase para `com.marcos.gurgel.gerepag`. Não alterar somente o Gradle, nem enviar um AAB com o package atual ao cadastro do Play Console.
 
 ## Segurança e billing
 
@@ -80,7 +80,7 @@ Não altere esses identificadores sem uma decisão de migração, pois eles afet
 
 ## Build Android assinado
 
-O build release exige `android/key.properties` e uma upload keystore fora do Git. O exemplo está em `android/key.properties.example`.
+O build release exige `android/key.properties` e uma upload keystore fora do Git. O exemplo está em `android/key.properties.example`. A upload key original foi perdida; uma nova chave externa foi criada e a redefinição foi solicitada no Play Console em 21 de setembro de 2026. Aguarde a ativação antes de enviar artefatos assinados.
 
 No GitHub Actions, configure:
 
@@ -90,7 +90,7 @@ No GitHub Actions, configure:
 - `ANDROID_STORE_PASSWORD`;
 - variável `GEREPAG_BILLING_API_BASE_URL`.
 
-Se o aplicativo já foi publicado, localize a upload key original ou confirme a redefinição na Play Console antes de gerar outra.
+Nunca versione a keystore, o certificado PEM, caminhos locais, aliases confidenciais ou senhas. Não altere a chave de assinatura do app no Play Console para recuperar a upload key.
 
 ## Comandos de validação
 

@@ -28,4 +28,4 @@ flutter build apk --debug --no-pub
 
 ## Atenção antes de publicar
 
-O identificador Android atual é `com.real.finance.control` e o bundle ID iOS é `com.antigravity.appfinancerio`. Não os altere sem plano de migração. Builds release Android exigem uma upload keystore externa ao repositório e o backend de billing configurado por `GEREPAG_BILLING_API_BASE_URL`.
+O app GerePag existente no Play Console usa `com.marcos.gurgel.gerepag`, enquanto o código Android atual ainda usa `com.real.finance.control`; a migração coordenada para o identificador do Play Console é obrigatória antes do próximo AAB. O bundle ID iOS atual é `com.antigravity.appfinancerio`. Builds release Android exigem uma upload keystore externa ao repositório, uma redefinição de chave de upload ativa no Play Console e o backend de billing configurado por `GEREPAG_BILLING_API_BASE_URL`.
