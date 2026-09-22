@@ -68,7 +68,7 @@ Preços e limites ainda aparecem em múltiplos pontos e precisam ser centralizad
 - Android e Firebase Android atuais no código: `com.real.finance.control`.
 - iOS atual: `com.antigravity.appfinancerio`.
 
-Decisão de publicação: reutilizar o app existente no Play Console. Portanto, antes da publicação Android, migrar em conjunto o `applicationId`, namespace, fontes Kotlin e Firebase para `com.marcos.gurgel.gerepag`. Não alterar somente o Gradle, nem enviar um AAB com o package atual ao cadastro do Play Console.
+Decisão de publicação: reutilizar o app existente no Play Console. O projeto Firebase `gerePag` já contém o app Android `com.marcos.gurgel.gerepag`; não recriar nem excluir o projeto. Antes da publicação Android, migrar em conjunto o `applicationId`, namespace e fontes Kotlin, depois baixar o `google-services.json` desse app Firebase. Não alterar somente o Gradle, nem enviar um AAB com o package atual ao cadastro do Play Console.
 
 ## Segurança e billing
 

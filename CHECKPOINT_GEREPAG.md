@@ -115,6 +115,7 @@ O cliente Flutter criava e consultava sessões diretamente na API Stripe usando 
 - O app GerePag já existente no Play Console usa o package name `com.marcos.gurgel.gerepag`.
 - O código Android e o Firebase Android atuais ainda usam `com.real.finance.control`.
 - Decisão tomada: reutilizar o app existente no Play Console. Antes de um AAB de produção, migrar em conjunto `applicationId`, namespace, pacotes Kotlin e configuração Firebase para `com.marcos.gurgel.gerepag`.
+- O projeto Firebase existente `gerePag` já possui o app Android registrado como `com.marcos.gurgel.gerepag`; manter esse projeto e, após a migração de código, baixar dele um novo `google-services.json`.
 - Não enviar AAB com `com.real.finance.control` ao cadastro existente do Play Console: ele seria recusado por package name diferente.
 - O bundle identifier iOS observado é `com.antigravity.appfinancerio`.
 - A configuração Firebase gerada contém Web e Android, mas não apresenta configuração iOS completa.
@@ -215,7 +216,8 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 - [x] Gerar nova upload keystore externa ao Git e solicitar redefinição da chave de upload.
 - [ ] Aguardar a ativação da nova chave de upload no Play Console.
 - [ ] Migrar package Android, namespace e código Kotlin para `com.marcos.gurgel.gerepag`.
-- [ ] Criar/cadastrar a configuração Firebase Android para `com.marcos.gurgel.gerepag` e substituir `google-services.json`.
+- [x] Confirmar que o Firebase já possui o app Android `com.marcos.gurgel.gerepag`.
+- [ ] Baixar o `google-services.json` desse app Firebase e substituir a configuração atual após a migração do package.
 - [ ] Criar `android/key.properties` somente na máquina local, fora do Git.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
 - [ ] Executar o workflow manual de AAB.
