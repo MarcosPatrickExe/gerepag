@@ -116,6 +116,8 @@ O cliente Flutter criava e consultava sessões diretamente na API Stripe usando 
 - O código Android e o Firebase Android atuais ainda usam `com.real.finance.control`.
 - Decisão tomada: reutilizar o app existente no Play Console. Antes de um AAB de produção, migrar em conjunto `applicationId`, namespace, pacotes Kotlin e configuração Firebase para `com.marcos.gurgel.gerepag`.
 - O projeto Firebase existente `gerePag` já possui o app Android registrado como `com.marcos.gurgel.gerepag`; manter esse projeto e, após a migração de código, baixar dele um novo `google-services.json`.
+- Diagnóstico local em 21 de setembro de 2026: `android/app/google-services.json` e `lib/firebase_options.dart` ainda apontam para o projeto Firebase antigo `financeiroapp-8b809` (número `694627493774`), não para o Firebase `gerePag`.
+- O APK debug foi instalado em emulador Android após limpar o armazenamento do AVD e alcançou a tela de login. A autenticação não foi validada porque o app ainda usa o Firebase antigo; depois da migração, confirmar que Email/Senha está habilitado no Firebase GerePag e testar uma conta de desenvolvimento sem registrar senhas no repositório.
 - Não enviar AAB com `com.real.finance.control` ao cadastro existente do Play Console: ele seria recusado por package name diferente.
 - O bundle identifier iOS observado é `com.antigravity.appfinancerio`.
 - A configuração Firebase gerada contém Web e Android, mas não apresenta configuração iOS completa.
@@ -149,6 +151,7 @@ Validações locais executadas em 21 de setembro de 2026 com Flutter 3.41.8, Dar
 - `flutter build web --release --no-pub`: aprovado.
 - `flutter build apk --debug --no-pub`: aprovado.
 - `flutter build appbundle --release --no-pub` sem chave: bloqueado corretamente com mensagem de assinatura ausente.
+- `flutter run` em emulador Android: build e instalação debug aprovados após limpar o armazenamento do AVD; tela de login exibida. O fluxo de autenticação permanece pendente da migração Firebase.
 
 Os warnings e infos do analisador continuam no roadmap de manutenção. Os workflows já estão em `main`; confirmar as execuções no GitHub Actions e corrigir eventuais falhas.
 
@@ -218,6 +221,8 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 - [ ] Migrar package Android, namespace e código Kotlin para `com.marcos.gurgel.gerepag`.
 - [x] Confirmar que o Firebase já possui o app Android `com.marcos.gurgel.gerepag`.
 - [ ] Baixar o `google-services.json` desse app Firebase e substituir a configuração atual após a migração do package.
+- [ ] Regenerar `lib/firebase_options.dart` para o projeto Firebase GerePag, incluindo Android e Web, sem registrar chaves privadas.
+- [ ] Habilitar/confirmar o provedor Firebase Authentication Email/Senha no projeto GerePag e criar/validar uma conta de desenvolvimento.
 - [ ] Criar `android/key.properties` somente na máquina local, fora do Git.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
 - [ ] Executar o workflow manual de AAB.
@@ -281,9 +286,9 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 
 ## 11. Próxima ação recomendada
 
-1. Iniciar um emulador Android e executar a versão de desenvolvimento para validar os fluxos essenciais.
-2. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido).
-3. Em paralelo, preparar a migração Android/Firebase para `com.marcos.gurgel.gerepag`; não fazer upload à Play Store antes de concluir e validar essa migração.
+1. Baixar a configuração do app Android `com.marcos.gurgel.gerepag` no Firebase GerePag e regenerar a configuração Flutter para Android/Web; só então migrar e validar o package no código.
+2. Confirmar Email/Senha no Firebase Authentication e retestar o login no emulador, guardando somente o código de erro, se existir.
+3. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido); não fazer upload à Play Store antes de concluir e validar a migração Firebase.
 6. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
 
 ## 12. Instrução para a próxima conversa/agente
