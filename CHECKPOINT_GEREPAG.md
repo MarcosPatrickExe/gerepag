@@ -162,6 +162,7 @@ Validações adicionais executadas em 22 de setembro de 2026 no worktree `codex/
 - Inspeção do APK gerado: package `com.marcos.gurgel.gerepag` confirmado.
 - Firebase Authentication por E-mail/Senha foi habilitado no projeto GerePag; uma conta de teste autenticou e alcançou o dashboard Android.
 - As regras iniciais do Realtime Database foram publicadas para permitir somente o acesso de cada usuário autenticado aos próprios nós `users/{uid}` e `omie_sync/{uid}`. Elas estão versionadas em `database.rules.json`.
+- Estado visual confirmado no emulador: o dashboard abre, mas exibe o fallback `Usuário` para a conta criada diretamente no Firebase Authentication. Isso ocorre porque esse usuário ainda não possui `users/{uid}/profile/name` no Realtime Database.
 
 Os warnings e infos do analisador continuam no roadmap de manutenção. Os workflows já estão em `main`; confirmar as execuções no GitHub Actions e corrigir eventuais falhas.
 
@@ -232,12 +233,14 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 - [x] Confirmar que o Firebase já possui o app Android `com.marcos.gurgel.gerepag`.
 - [x] Baixar o `google-services.json` desse app Firebase e substituir a configuração atual na branch de migração.
 - [x] Regenerar `lib/firebase_options.dart` e `firebase.json` para o projeto Firebase GerePag, incluindo Android e Web, sem registrar chaves privadas.
-- [ ] Habilitar/confirmar o provedor Firebase Authentication Email/Senha no projeto GerePag e criar/validar uma conta de desenvolvimento.
+- [x] Habilitar e validar o provedor Firebase Authentication Email/Senha com uma conta de desenvolvimento.
 - [ ] Criar `android/key.properties` somente na máquina local, fora do Git.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
 - [ ] Executar o workflow manual de AAB.
 - [ ] Verificar a assinatura do AAB.
-- [ ] Executar o app em emulador Android com a branch de migração e validar login, Firebase, navegação e funções prioritárias.
+- [x] Executar o app em emulador Android, validar login Firebase e alcançar o dashboard.
+- [ ] Criar uma transação fictícia, reiniciar o app e confirmar a persistência/leitura no Realtime Database.
+- [ ] Provisionar perfil para usuários criados diretamente no Firebase Authentication e exibir `profile/name` no dashboard, em vez do fallback `Usuário`; testar esse fluxo.
 - [ ] Testar o artefato em aparelho/faixa interna da Play Console.
 - [ ] Configurar proteção da `main` exigindo CI aprovado.
 
@@ -297,11 +300,12 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 
 ## 11. Próxima ação recomendada
 
-1. Revisar e integrar a branch `codex/firebase-package-migration` na `main`; depois sincronizar a cópia local principal.
-2. No Firebase GerePag, confirmar Email/Senha em Authentication e criar/usar uma conta de desenvolvimento; executar esta branch no emulador e registrar somente o código de erro se houver.
-3. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido); não fazer upload à Play Store antes de concluir e validar a migração Firebase.
-4. Após a ativação, criar `android/key.properties` apenas localmente, cadastrar os secrets no GitHub e validar o primeiro AAB assinado em faixa interna.
-5. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
+1. Criar uma transação fictícia no emulador, reiniciar o app e confirmar que ela permanece; registrar qualquer erro sem expor credenciais.
+2. Implementar e testar o provisionamento do perfil (`users/{uid}/profile/name`) para contas criadas diretamente no Firebase Authentication; o objetivo é substituir o fallback visual `Usuário` pelo nome real.
+3. Ampliar as regras do Realtime Database para famílias, BPO, contador e administração sem permitir escalonamento de privilégios.
+4. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido); não fazer upload à Play Store antes de concluir e validar a migração Firebase.
+5. Após a ativação, criar `android/key.properties` apenas localmente, cadastrar os secrets no GitHub e validar o primeiro AAB assinado em faixa interna.
+6. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
 
 ## 12. Instrução para a próxima conversa/agente
 
