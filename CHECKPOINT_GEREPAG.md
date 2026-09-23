@@ -160,6 +160,8 @@ Validações adicionais executadas em 22 de setembro de 2026 no worktree `codex/
 - `flutter test --no-pub`: 10 testes aprovados.
 - `:app:assembleDebug`: aprovado pelo Gradle.
 - Inspeção do APK gerado: package `com.marcos.gurgel.gerepag` confirmado.
+- Firebase Authentication por E-mail/Senha foi habilitado no projeto GerePag; uma conta de teste autenticou e alcançou o dashboard Android.
+- As regras iniciais do Realtime Database foram publicadas para permitir somente o acesso de cada usuário autenticado aos próprios nós `users/{uid}` e `omie_sync/{uid}`. Elas estão versionadas em `database.rules.json`.
 
 Os warnings e infos do analisador continuam no roadmap de manutenção. Os workflows já estão em `main`; confirmar as execuções no GitHub Actions e corrigir eventuais falhas.
 
@@ -252,7 +254,8 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 
 ### P1 — Firebase e autorização
 
-- [ ] Versionar regras Realtime Database.
+- [x] Versionar regras iniciais Realtime Database para isolamento por usuário.
+- [ ] Ampliar as regras Realtime Database para famílias, BPO, contador e administração com privilégios mínimos.
 - [ ] Versionar regras Firestore.
 - [ ] Versionar índices Firebase.
 - [ ] Ativar/configurar App Check.
