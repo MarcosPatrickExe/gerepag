@@ -1,4 +1,4 @@
-package com.real.finance.control
+package com.marcos.gurgel.gerepag
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

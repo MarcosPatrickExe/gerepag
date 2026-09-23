@@ -1,6 +1,6 @@
 # CHECKPOINT — Projeto GerePag
 
-> Atualizado em 21 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+> Atualizado em 22 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
 
 ## 1. Objetivo da continuidade
 
@@ -10,9 +10,9 @@ Usar o GitHub como fonte de verdade e manter a cópia local sincronizada com ele
 
 - Repositório: `https://github.com/MarcosPatrickExe/gerepag`.
 - Branch padrão observada: `main`.
-- Commit atual de `main`: `d851f83b26046969d0a43bd7bc3a5eb93b474cf1`.
+- Commit atual de `main`: `fb600b9` antes da migração Firebase/Android descrita abaixo.
 - O pacote de segurança, CI, documentação e testes foi integrado por fast-forward em 21 de setembro de 2026.
-- A cópia local principal está em `main` e sincronizada com `origin/main` nesse mesmo commit.
+- A cópia local principal está em `main` e sincronizada com `origin/main` nesse mesmo commit. A migração Firebase/Android está sendo preparada no worktree e branch `codex/firebase-package-migration`; ainda não foi integrada à `main`.
 - A integração GitHub voltou a permitir escrita em 21 de setembro de 2026.
 - A permissão do aplicativo GitHub dentro do ChatGPT está configurada como `Permitir todas as ações`.
 
@@ -113,17 +113,16 @@ O cliente Flutter criava e consultava sessões diretamente na API Stripe usando 
 ## 7. Android, assinatura e AAB
 
 - O app GerePag já existente no Play Console usa o package name `com.marcos.gurgel.gerepag`.
-- O código Android e o Firebase Android atuais ainda usam `com.real.finance.control`.
-- Decisão tomada: reutilizar o app existente no Play Console. Antes de um AAB de produção, migrar em conjunto `applicationId`, namespace, pacotes Kotlin e configuração Firebase para `com.marcos.gurgel.gerepag`.
-- O projeto Firebase existente `gerePag` já possui o app Android registrado como `com.marcos.gurgel.gerepag`; manter esse projeto e, após a migração de código, baixar dele um novo `google-services.json`.
-- Diagnóstico local em 21 de setembro de 2026: `android/app/google-services.json` e `lib/firebase_options.dart` ainda apontam para o projeto Firebase antigo `financeiroapp-8b809` (número `694627493774`), não para o Firebase `gerePag`.
-- O APK debug foi instalado em emulador Android após limpar o armazenamento do AVD e alcançou a tela de login. A autenticação não foi validada porque o app ainda usa o Firebase antigo; depois da migração, confirmar que Email/Senha está habilitado no Firebase GerePag e testar uma conta de desenvolvimento sem registrar senhas no repositório.
+- O código Android e o Firebase Android usavam `com.real.finance.control`/`financeiroapp-8b809` antes desta migração.
+- Decisão tomada: reutilizar o app existente no Play Console. A migração foi preparada em `codex/firebase-package-migration`: `applicationId`, namespace e pacotes Kotlin agora usam `com.marcos.gurgel.gerepag`.
+- O projeto Firebase existente `gerePag` (`gerepag-9e692`) possui o app Android correto e foi mantido. A configuração foi regenerada pelo FlutterFire usando explicitamente os apps Android e Web existentes; `android/app/google-services.json`, `lib/firebase_options.dart` e `firebase.json` agora apontam para esse projeto.
+- O APK debug foi instalado em emulador Android após limpar o armazenamento do AVD e alcançou a tela de login. Repetir esse teste com o APK desta branch e confirmar que Email/Senha está habilitado no Firebase GerePag; criar/usar uma conta de desenvolvimento sem registrar senhas no repositório.
 - Não enviar AAB com `com.real.finance.control` ao cadastro existente do Play Console: ele seria recusado por package name diferente.
 - O bundle identifier iOS observado é `com.antigravity.appfinancerio`.
 - A configuração Firebase gerada contém Web e Android, mas não apresenta configuração iOS completa.
 - Não existe upload keystore versionada, o que é correto.
 - Não existe `android/key.properties` versionado.
-- A upload keystore original está perdida. Uma nova upload keystore externa ao Git foi criada e o certificado PEM foi enviado em uma solicitação de redefinição no Play Console em 21 de setembro de 2026; aguardar a data/hora de ativação informada pelo Google antes de enviar novos artefatos.
+- A upload keystore original está perdida. Uma nova upload keystore externa ao Git foi criada e o certificado PEM foi enviado em uma solicitação de redefinição no Play Console em 21 de setembro de 2026; em 22 de setembro o Console ainda mostrava a solicitação como pendente. Aguardar a data/hora de ativação informada pelo Google antes de enviar novos artefatos.
 - Não registrar neste repositório caminho, senha, arquivo da keystore ou certificado PEM. Não usar a opção de mudar a chave de assinatura do app para esta recuperação.
 - A configuração original permitia fallback de release para assinatura debug; isso foi corrigido no commit cloud preparado.
 
@@ -153,13 +152,22 @@ Validações locais executadas em 21 de setembro de 2026 com Flutter 3.41.8, Dar
 - `flutter build appbundle --release --no-pub` sem chave: bloqueado corretamente com mensagem de assinatura ausente.
 - `flutter run` em emulador Android: build e instalação debug aprovados após limpar o armazenamento do AVD; tela de login exibida. O fluxo de autenticação permanece pendente da migração Firebase.
 
+Validações adicionais executadas em 22 de setembro de 2026 no worktree `codex/firebase-package-migration`:
+
+- `flutterfire configure` para o projeto `gerepag-9e692`, plataformas Android e Web e IDs de apps existentes: aprovado; nenhum app Firebase adicional foi criado.
+- `flutter pub get`: aprovado.
+- `flutter analyze --no-fatal-infos --no-fatal-warnings`: sem erros bloqueantes; 507 warnings/infos legados.
+- `flutter test --no-pub`: 10 testes aprovados.
+- `:app:assembleDebug`: aprovado pelo Gradle.
+- Inspeção do APK gerado: package `com.marcos.gurgel.gerepag` confirmado.
+
 Os warnings e infos do analisador continuam no roadmap de manutenção. Os workflows já estão em `main`; confirmar as execuções no GitHub Actions e corrigir eventuais falhas.
 
 ## 9. Alterações integradas na main
 
 O pacote de mudanças originalmente descrito no commit cloud `2f53985` não estava disponível nesta máquina e foi reconstruído, validado e publicado:
 
-- Commits integrados: `a753953` (`chore: harden release pipeline and add tests`) e `d851f83` (`docs: update validation checkpoint`).
+- Commits integrados: `a753953` (`chore: harden release pipeline and add tests`), `d851f83` (`docs: update validation checkpoint`), `58cc0d3`, `a6a1f5e` e `fb600b9` (documentação da recuperação de chave e migração Firebase).
 
 Principais mudanças:
 
@@ -218,16 +226,16 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 - [x] Decidir reutilizar o app existente no Play Console.
 - [x] Gerar nova upload keystore externa ao Git e solicitar redefinição da chave de upload.
 - [ ] Aguardar a ativação da nova chave de upload no Play Console.
-- [ ] Migrar package Android, namespace e código Kotlin para `com.marcos.gurgel.gerepag`.
+- [x] Migrar package Android, namespace e código Kotlin para `com.marcos.gurgel.gerepag` na branch `codex/firebase-package-migration`; falta revisão, publicação e integração na `main`.
 - [x] Confirmar que o Firebase já possui o app Android `com.marcos.gurgel.gerepag`.
-- [ ] Baixar o `google-services.json` desse app Firebase e substituir a configuração atual após a migração do package.
-- [ ] Regenerar `lib/firebase_options.dart` para o projeto Firebase GerePag, incluindo Android e Web, sem registrar chaves privadas.
+- [x] Baixar o `google-services.json` desse app Firebase e substituir a configuração atual na branch de migração.
+- [x] Regenerar `lib/firebase_options.dart` e `firebase.json` para o projeto Firebase GerePag, incluindo Android e Web, sem registrar chaves privadas.
 - [ ] Habilitar/confirmar o provedor Firebase Authentication Email/Senha no projeto GerePag e criar/validar uma conta de desenvolvimento.
 - [ ] Criar `android/key.properties` somente na máquina local, fora do Git.
 - [ ] Cadastrar os quatro secrets Android no GitHub.
 - [ ] Executar o workflow manual de AAB.
 - [ ] Verificar a assinatura do AAB.
-- [ ] Executar o app em emulador Android e validar login, Firebase, navegação e funções prioritárias.
+- [ ] Executar o app em emulador Android com a branch de migração e validar login, Firebase, navegação e funções prioritárias.
 - [ ] Testar o artefato em aparelho/faixa interna da Play Console.
 - [ ] Configurar proteção da `main` exigindo CI aprovado.
 
@@ -286,10 +294,11 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 
 ## 11. Próxima ação recomendada
 
-1. Baixar a configuração do app Android `com.marcos.gurgel.gerepag` no Firebase GerePag e regenerar a configuração Flutter para Android/Web; só então migrar e validar o package no código.
-2. Confirmar Email/Senha no Firebase Authentication e retestar o login no emulador, guardando somente o código de erro, se existir.
+1. Revisar e integrar a branch `codex/firebase-package-migration` na `main`; depois sincronizar a cópia local principal.
+2. No Firebase GerePag, confirmar Email/Senha em Authentication e criar/usar uma conta de desenvolvimento; executar esta branch no emulador e registrar somente o código de erro se houver.
 3. Aguardar o e-mail/estado do Play Console que confirma a ativação da nova upload key (normalmente cerca de 48 horas após o pedido); não fazer upload à Play Store antes de concluir e validar a migração Firebase.
-6. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
+4. Após a ativação, criar `android/key.properties` apenas localmente, cadastrar os secrets no GitHub e validar o primeiro AAB assinado em faixa interna.
+5. Priorizar imediatamente rotação de chaves e resposta à exposição de dados.
 
 ## 12. Instrução para a próxima conversa/agente
 

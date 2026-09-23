@@ -27,7 +27,7 @@ plugins {
 }
 
 android {
-    namespace = "com.real.finance.control"  // MUDAR PARA-> com.patrickson.gerepag
+    namespace = "com.marcos.gurgel.gerepag"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.real.finance.control"
+        applicationId = "com.marcos.gurgel.gerepag"
         
         // UMA SOLUÇÃO ROBUSTA: Lemos das propriedades do Flutter fixadas no local.properties
         val flutterMinSdkVersion = project.findProperty("flutter.minSdkVersion")?.toString()?.toInt() ?: 23

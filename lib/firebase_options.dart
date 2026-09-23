@@ -18,22 +18,23 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCA1j7HcU38qxR_KTJZTtXyAkgHk-bgVuw',
-    appId: '1:694627493774:web:af27a15fab6fa7c8e5e6df',
-    messagingSenderId: '694627493774',
-    projectId: 'financeiroapp-8b809',
-    authDomain: 'financeiroapp-8b809.firebaseapp.com',
-    storageBucket: 'financeiroapp-8b809.firebasestorage.app',
-    measurementId: 'G-C2MPPKDLWJ',
-    databaseURL: 'https://financeiroapp-8b809-default-rtdb.firebaseio.com',
+    apiKey: 'AIzaSyADLfX1m27ygC2RqSsIGNgauPru5Fe6ubc',
+    appId: '1:712579823358:web:852b0448bc5ed70d9bd7af',
+    messagingSenderId: '712579823358',
+    projectId: 'gerepag-9e692',
+    authDomain: 'gerepag-9e692.firebaseapp.com',
+    databaseURL: 'https://gerepag-9e692-default-rtdb.firebaseio.com',
+    storageBucket: 'gerepag-9e692.firebasestorage.app',
+    measurementId: 'G-NB49NTY9GF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD-ugnn7FSoHL6_2gDkz6MKnJJtVtZb91A',
-    appId: '1:694627493774:android:7aa5c41dc837cc44e5e6df',
-    messagingSenderId: '694627493774',
-    projectId: 'financeiroapp-8b809',
-    storageBucket: 'financeiroapp-8b809.firebasestorage.app',
-    databaseURL: 'https://financeiroapp-8b809-default-rtdb.firebaseio.com',
+    apiKey: 'AIzaSyBLrc1UE2ed8ImwbeOVWtdXIDj_t96DQDY',
+    appId: '1:712579823358:android:d5b614576ee632f89bd7af',
+    messagingSenderId: '712579823358',
+    projectId: 'gerepag-9e692',
+    databaseURL: 'https://gerepag-9e692-default-rtdb.firebaseio.com',
+    storageBucket: 'gerepag-9e692.firebasestorage.app',
   );
+
 }

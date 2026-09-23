@@ -1,4 +1,4 @@
-package com.real.finance.control
+package com.marcos.gurgel.gerepag
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
