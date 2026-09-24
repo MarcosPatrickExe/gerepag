@@ -1,6 +1,15 @@
 # CHECKPOINT — Projeto GerePag
 
-> Atualizado em 22 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+> Atualizado em 23 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+
+## Atualização de 23/09/2026 — dados, iOS e App Store
+
+- A transação de teste entre duas contas foi concluída no emulador; ao fechar e reabrir o app, os saldos continuaram presentes. A origem é o **Realtime Database** (`users/{uid}`), com `SharedPreferences` usado como cache/preferências, e não o Firestore. Ainda convém validar essa mesma conta em outro dispositivo ou no Console Firebase.
+- Foi adicionado em **Drawer → Configurações**, abaixo de **Sair da Conta**, o item vermelho **Excluir minha conta**. O fluxo pede confirmação e senha atual, reautentica, remove `users/{uid}` e `omie_sync/{uid}`, exclui o usuário Firebase Auth e limpa preferências locais. Antes da App Store, testar em homologação e concluir exclusão de dados compartilhados, públicos e sujeitos a retenção via backend.
+- A URL de **Política de privacidade** ainda não foi fornecida. Ela deve ser adicionada ao drawer/Configurações assim que existir e é P0 para iOS/App Store Connect.
+- Foi criado `APP_STORE_READINESS.md` com a revisão de escopo, riscos e sequência de lançamento. Ele registra uma decisão essencial: consumidores autônomos precisam de StoreKit/IAP para planos digitais no iOS; clientes empresariais já contratados podem acessar a assinatura corporativa pré-existente, sem oferecer checkout externo ao consumidor nessa jornada.
+- Há divergência iOS: o Firebase Console contém o app iOS `com.marcos.gurgel.gerepag`, enquanto o projeto Xcode ainda usa `com.antigravity.appfinancerio` e não possui `GoogleService-Info.plist`/opções Firebase iOS. Não publicar iOS antes de criar/confirmar o Identifier Apple e alinhar Xcode + Firebase + FlutterFire.
+- Os rótulos `appfinanceiro` exibidos no Firebase para Android/iOS são nomes administrativos. Eles podem ser renomeados para GerePag sem alterar os IDs corretos; não recriar nem apagar os apps Firebase Android/iOS. O aplicativo macOS antigo permanece separado e não bloqueia o iOS.
 
 ## 1. Objetivo da continuidade
 
