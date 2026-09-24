@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'login_screen.dart';
 import '../core/app_theme.dart';
 import '../providers/subscription_provider.dart';
@@ -31,6 +33,10 @@ import 'break_even_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
+
+  static final Uri _privacyPolicyUri = Uri.parse(
+    'https://gerepague.netlify.app/privacidade',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -287,6 +293,12 @@ class SettingsScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      _buildSettingsTile(
+                        icon: Icons.privacy_tip_outlined,
+                        title: 'Política de privacidade',
+                        subtitle: 'Saiba como seus dados são tratados',
+                        onTap: () => _openPrivacyPolicy(context),
+                      ),
                       const Divider(height: 48),
                       _buildSettingsTile(
                         icon: Icons.logout,
@@ -530,6 +542,12 @@ class SettingsScreen extends StatelessWidget {
                     );
                   },
                 ),
+                _buildSettingsTile(
+                  icon: Icons.privacy_tip_outlined,
+                  title: 'Política de privacidade',
+                  subtitle: 'Saiba como seus dados são tratados',
+                  onTap: () => _openPrivacyPolicy(context),
+                ),
                 const Divider(height: 40),
                 if (!isBpo) ...[
                   _buildBusinessSection(context, transProvider, subProvider),
@@ -563,6 +581,57 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 48),
               ],
             ),
+      ),
+    );
+  }
+
+  Future<void> _openPrivacyPolicy(BuildContext context) async {
+    try {
+      final response = await http
+          .get(_privacyPolicyUri)
+          .timeout(const Duration(seconds: 8));
+
+      if (response.statusCode < 200 || response.statusCode >= 400) {
+        if (context.mounted) {
+          await _showPrivacyPolicyUnavailableDialog(context);
+        }
+        return;
+      }
+
+      if (!context.mounted) return;
+
+      final launched = await launchUrl(
+        _privacyPolicyUri,
+        mode: LaunchMode.inAppWebView,
+        webOnlyWindowName: '_self',
+      );
+
+      if (!launched && context.mounted) {
+        await _showPrivacyPolicyUnavailableDialog(context);
+      }
+    } catch (_) {
+      if (context.mounted) {
+        await _showPrivacyPolicyUnavailableDialog(context);
+      }
+    }
+  }
+
+  Future<void> _showPrivacyPolicyUnavailableDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.wifi_off_rounded, color: Colors.orange, size: 34),
+        title: const Text('Sem conexão com a internet'),
+        content: const Text(
+          'Não foi possível acessar a Política de Privacidade. '
+          'Verifique sua conexão Wi-Fi ou os dados móveis e tente novamente.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
