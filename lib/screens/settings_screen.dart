@@ -20,6 +20,7 @@ import 'portfolio_setup_screen.dart';
 import '../services/pdf_report_service.dart';
 import '../services/bank_sync_service.dart';
 import '../services/bio_auth_service.dart';
+import '../services/account_deletion_service.dart';
 import '../services/realtime_db_service.dart';
 import 'package:flutter_notification_listener/flutter_notification_listener.dart';
 import 'package:share_plus/share_plus.dart';
@@ -302,6 +303,14 @@ class SettingsScreen extends StatelessWidget {
                         },
                         color: AppTheme.expense,
                       ),
+                      const SizedBox(height: 8),
+                      _buildSettingsTile(
+                        icon: Icons.delete_forever_outlined,
+                        title: 'Excluir minha conta',
+                        subtitle: 'Apagar conta e dados individuais permanentemente',
+                        onTap: () => _showAccountDeletionFlow(context),
+                        color: Colors.red.shade900,
+                      ),
                     ],
                   ),
                 ),
@@ -543,11 +552,138 @@ class SettingsScreen extends StatelessWidget {
                   },
                   color: AppTheme.expense,
                 ),
+                const SizedBox(height: 8),
+                _buildSettingsTile(
+                  icon: Icons.delete_forever_outlined,
+                  title: 'Excluir minha conta',
+                  subtitle: 'Apagar conta e dados individuais permanentemente',
+                  onTap: () => _showAccountDeletionFlow(context),
+                  color: Colors.red.shade900,
+                ),
                 const SizedBox(height: 48),
               ],
             ),
       ),
     );
+  }
+
+  Future<void> _showAccountDeletionFlow(BuildContext context) async {
+    final shouldContinue = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 34),
+        title: const Text('Excluir minha conta?'),
+        content: const Text(
+          'Esta ação remove sua conta de acesso e os dados individuais do GerePag. '
+          'Ela não pode ser desfeita. Dados compartilhados ou sujeitos a retenção legal '
+          'seguem o processo informado na política de privacidade.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('CANCELAR'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900),
+            child: const Text('CONTINUAR', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldContinue != true || !context.mounted) return;
+
+    final passwordController = TextEditingController();
+    final deleted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        var isDeleting = false;
+        String? errorMessage;
+
+        return StatefulBuilder(
+          builder: (context, setDialogState) => AlertDialog(
+            title: const Text('Confirme sua senha'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Digite sua senha atual para confirmar a exclusão definitiva.'),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  autofocus: true,
+                  enabled: !isDeleting,
+                  decoration: const InputDecoration(
+                    labelText: 'Senha atual',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                if (errorMessage != null) ...[
+                  const SizedBox(height: 12),
+                  Text(errorMessage!, style: const TextStyle(color: Colors.red)),
+                ],
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: isDeleting ? null : () => Navigator.pop(dialogContext, false),
+                child: const Text('CANCELAR'),
+              ),
+              ElevatedButton(
+                onPressed: isDeleting
+                    ? null
+                    : () async {
+                        setDialogState(() {
+                          isDeleting = true;
+                          errorMessage = null;
+                        });
+                        try {
+                          await AccountDeletionService().deleteCurrentAccount(
+                            password: passwordController.text,
+                          );
+                          if (dialogContext.mounted) {
+                            Navigator.pop(dialogContext, true);
+                          }
+                        } on AccountDeletionException catch (error) {
+                          setDialogState(() {
+                            isDeleting = false;
+                            errorMessage = error.message;
+                          });
+                        } catch (_) {
+                          setDialogState(() {
+                            isDeleting = false;
+                            errorMessage = 'Não foi possível concluir a exclusão. Tente novamente.';
+                          });
+                        }
+                      },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900),
+                child: isDeleting
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      )
+                    : const Text('EXCLUIR CONTA', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    passwordController.dispose();
+
+    if (deleted == true && context.mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (route) => false,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sua conta e os dados individuais foram excluídos.')),
+      );
+    }
   }
 
   Widget _buildSectionTitle(String title) {
