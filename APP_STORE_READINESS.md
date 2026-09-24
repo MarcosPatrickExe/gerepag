@@ -35,7 +35,7 @@ Essa distinção determina a cobrança. Recursos digitais vendidos a consumidore
 |---|---|---|
 | P0 | A conta iOS local usa `com.antigravity.appfinancerio`, mas o Firebase iOS exibido usa `com.marcos.gurgel.gerepag`. Não há `GoogleService-Info.plist` nem opção Firebase iOS gerada. | Criar/confirmar o App ID Apple e migrar o Xcode, Firebase e FlutterFire juntos para `com.marcos.gurgel.gerepag`; então fazer build iOS em CI. |
 | P0 | O app cria conta e armazena dados financeiros. A Apple exige que o usuário possa iniciar a exclusão dentro do app. | O botão e fluxo de confirmação foram adicionados. Antes do envio, concluir o backend para limpeza de vínculos compartilhados, dados públicos e retenções legais; testar em projeto Firebase de homologação. |
-| P0 | Não há URL de política de privacidade. | Publicar uma página acessível sem login, informar URL ao time e adicionar a opção no drawer/Configurações; preencher App Privacy no App Store Connect. |
+| Concluído | A política de privacidade está publicada em `https://gerepague.netlify.app/privacidade` e acessível em Configurações. | O app verifica a conectividade, abre a página em WebView interna e informa falta de internet por modal. Manter a URL ativa e preencher App Privacy no App Store Connect. |
 | P0 | As regras atuais do Realtime Database isolam somente `users/{uid}` e `omie_sync/{uid}`. O código também opera famílias, BPO, contador, portfólio e administração. | Modelar e testar autorização de menor privilégio com Emulator Suite e regras versionadas; impedir escalonamento de papel no cliente. |
 | P0 | Há fluxos administrativos que escrevem `role=admin` no cliente e integrações sensíveis (Omie/IA) ainda próximas do dispositivo. | Transferir privilégios, credenciais e decisões de acesso para backend autenticado; remover métodos de promoção do build de produção. |
 | P0 | O checkout Stripe atende ao fluxo atual, mas não há StoreKit/IAP para consumidor iOS. | Implementar assinatura/entitlement por App Store, validação no servidor e restauração de compras. Condicionar/remover Stripe na experiência iOS para consumidor. |
@@ -58,7 +58,7 @@ O processo exige rede e senha. Enquanto a operação não retornar sucesso, o us
 
 ### Ainda obrigatório antes da App Store
 
-- [ ] Entregar a URL pública da política de privacidade e adicioná-la no drawer/Configurações (pendência solicitada pelos proprietários).
+- [x] Publicar a política em `https://gerepague.netlify.app/privacidade` e adicioná-la em Configurações com abertura em WebView interna e aviso de falta de conexão.
 - [ ] Escrever política que descreva dados financeiros, e-mail, dados de Omie, OCR, IA, notificações, terceiros, finalidade, base legal, retenção e contato.
 - [ ] Definir o que ocorre com dados familiares, BPO, contador, `portfolio_slugs`, faturas, backups e dados legalmente retidos.
 - [ ] Fazer essa exclusão completa no backend com trilha de auditoria mínima e confirmação ao usuário; não deixar referências compartilhadas órfãs.
@@ -90,7 +90,7 @@ O processo exige rede e senha. Enquanto a operação não retornar sucesso, o us
 - [ ] Preparar nome, subtítulo, descrição, categoria, suporte, marketing URL se houver, ícone e screenshots reais de iPhone/iPad.
 - [ ] Disponibilizar uma conta de revisão sem dados reais, com instruções de login e de recursos restritos.
 - [ ] Preencher App Privacy de acordo com a implementação e parceiros (Firebase, Omie, IA, OCR, notificações, analytics se ativado).
-- [ ] Inserir a URL de política de privacidade pública.
+- [x] Inserir `https://gerepague.netlify.app/privacidade` como URL pública da política de privacidade.
 - [ ] Definir classificação etária, export compliance, disponibilidade por país, direitos autorais e contato de revisão.
 - [ ] Configurar produtos/assinaturas e testes sandbox de IAP antes de enviar a primeira versão.
 
@@ -106,7 +106,7 @@ Pendências recomendadas:
 
 ## Ordem objetiva de execução
 
-1. Concluir o fluxo de exclusão em homologação e receber a URL da política de privacidade.
+1. Concluir e validar o fluxo de exclusão em homologação; manter a política de privacidade publicada e acessível pelo aplicativo.
 2. Corrigir autorização Firebase e a segurança das integrações/planos.
 3. Definir StoreKit para consumidor e acesso pré-contratado para empresas.
 4. Criar o App ID Apple `com.marcos.gurgel.gerepag`; depois alinhar Xcode + Firebase iOS + FlutterFire.
