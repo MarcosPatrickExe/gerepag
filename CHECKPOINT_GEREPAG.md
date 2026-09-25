@@ -1,12 +1,22 @@
 # CHECKPOINT — Projeto GerePag
 
-> Atualizado em 23 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+> Atualizado em 25 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+
+## Atualização de 25/09/2026 — política de privacidade no app
+
+- A entrega foi preparada na PR [#3](https://github.com/MarcosPatrickExe/gerepag/pull/3), na branch `feature/privacy-policy-webview`, criada a partir da `main` remota atualizada.
+- A tela **Configurações** passou a exibir **Política de privacidade** nos layouts mobile e amplo, apontando para `https://gerepague.netlify.app/privacidade`.
+- Antes de abrir a página, o app verifica sua disponibilidade com timeout de 8 segundos. Quando acessível, usa `LaunchMode.inAppWebView`; no Flutter Web, usa `_self` para manter a navegação na aplicação.
+- Se a página não puder ser acessada por ausência de Wi-Fi, dados móveis, timeout ou falha de abertura, o app mostra o modal **Sem conexão com a internet**, orientando o usuário a verificar a rede.
+- A implementação reutiliza `http` e `url_launcher`, já presentes no projeto; não adiciona dependências nem exige nova configuração nativa.
+- O GitHub Actions validou análise estática, testes unitários/de widget, build Web release e build Android debug. A execução [#11](https://github.com/MarcosPatrickExe/gerepag/actions/runs/36068518578) foi concluída com sucesso.
+- O merge tradicional da PR #3 foi autorizado em 25 de setembro de 2026, preservando os commits separados por arquivo e o histórico da implementação.
 
 ## Atualização de 23/09/2026 — dados, iOS e App Store
 
 - A transação de teste entre duas contas foi concluída no emulador; ao fechar e reabrir o app, os saldos continuaram presentes. A origem é o **Realtime Database** (`users/{uid}`), com `SharedPreferences` usado como cache/preferências, e não o Firestore. Ainda convém validar essa mesma conta em outro dispositivo ou no Console Firebase.
 - Foi adicionado em **Drawer → Configurações**, abaixo de **Sair da Conta**, o item vermelho **Excluir minha conta**. O fluxo pede confirmação e senha atual, reautentica, remove `users/{uid}` e `omie_sync/{uid}`, exclui o usuário Firebase Auth e limpa preferências locais. Antes da App Store, testar em homologação e concluir exclusão de dados compartilhados, públicos e sujeitos a retenção via backend.
-- A URL de **Política de privacidade** ainda não foi fornecida. Ela deve ser adicionada ao drawer/Configurações assim que existir e é P0 para iOS/App Store Connect.
+- A política de privacidade foi publicada em `https://gerepague.netlify.app/privacidade` e integrada à tela de Configurações. O app verifica a disponibilidade da página, abre o conteúdo em WebView interna e exibe um modal orientando o usuário a verificar Wi-Fi ou dados móveis quando não houver conexão.
 - Foi criado `APP_STORE_READINESS.md` com a revisão de escopo, riscos e sequência de lançamento. Ele registra uma decisão essencial: consumidores autônomos precisam de StoreKit/IAP para planos digitais no iOS; clientes empresariais já contratados podem acessar a assinatura corporativa pré-existente, sem oferecer checkout externo ao consumidor nessa jornada.
 - Há divergência iOS: o Firebase Console contém o app iOS `com.marcos.gurgel.gerepag`, enquanto o projeto Xcode ainda usa `com.antigravity.appfinancerio` e não possui `GoogleService-Info.plist`/opções Firebase iOS. Não publicar iOS antes de criar/confirmar o Identifier Apple e alinhar Xcode + Firebase + FlutterFire.
 - Os rótulos `appfinanceiro` exibidos no Firebase para Android/iOS são nomes administrativos. Eles podem ser renomeados para GerePag sem alterar os IDs corretos; não recriar nem apagar os apps Firebase Android/iOS. O aplicativo macOS antigo permanece separado e não bloqueia o iOS.
@@ -300,6 +310,7 @@ A `main` remota e local foram atualizadas. Próximas etapas: ativação da nova 
 
 ### P2 — Plataformas e produto
 
+- [x] Publicar e integrar a política de privacidade em WebView interna com aviso offline.
 - [x] Decidir o application ID Android alvo: `com.marcos.gurgel.gerepag`.
 - [ ] Configurar Firebase iOS corretamente.
 - [ ] Revisar bundle ID iOS.
