@@ -1,6 +1,16 @@
 # CHECKPOINT — Projeto GerePag
 
-> Atualizado em 24 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+> Atualizado em 25 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
+
+## Atualização de 25/09/2026 — política de privacidade no app
+
+- A entrega foi preparada na PR [#3](https://github.com/MarcosPatrickExe/gerepag/pull/3), na branch `feature/privacy-policy-webview`, criada a partir da `main` remota atualizada.
+- A tela **Configurações** passou a exibir **Política de privacidade** nos layouts mobile e amplo, apontando para `https://gerepague.netlify.app/privacidade`.
+- Antes de abrir a página, o app verifica sua disponibilidade com timeout de 8 segundos. Quando acessível, usa `LaunchMode.inAppWebView`; no Flutter Web, usa `_self` para manter a navegação na aplicação.
+- Se a página não puder ser acessada por ausência de Wi-Fi, dados móveis, timeout ou falha de abertura, o app mostra o modal **Sem conexão com a internet**, orientando o usuário a verificar a rede.
+- A implementação reutiliza `http` e `url_launcher`, já presentes no projeto; não adiciona dependências nem exige nova configuração nativa.
+- O GitHub Actions validou análise estática, testes unitários/de widget, build Web release e build Android debug. A execução [#11](https://github.com/MarcosPatrickExe/gerepag/actions/runs/36068518578) foi concluída com sucesso.
+- O merge tradicional da PR #3 foi autorizado em 25 de setembro de 2026, preservando os commits separados por arquivo e o histórico da implementação.
 
 ## Atualização de 23/09/2026 — dados, iOS e App Store
 
