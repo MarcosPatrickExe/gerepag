@@ -51,8 +51,23 @@ app.*.map.json
 /android/*.keystore
 /android/app/*.jks
 /android/app/*.keystore
+*.jks
+*.keystore
 *.p12
 *.pfx
+*.p8
+*.key
+*.pem
+*.der
+*.mobileprovision
+
+# Local environment files and server credentials
+.env
+.env.*
+!.env.example
+serviceAccountKey.json
+service-account*.json
+*-firebase-adminsdk-*.json
 
 # Downloaded credentials, private exports and generated source dumps
 client_secret_*.json
