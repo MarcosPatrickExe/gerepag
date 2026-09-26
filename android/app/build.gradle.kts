@@ -45,12 +45,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.marcos.gurgel.gerepag"
         
-        // UMA SOLUÇÃO ROBUSTA: Lemos das propriedades do Flutter fixadas no local.properties
-        val flutterMinSdkVersion = project.findProperty("flutter.minSdkVersion")?.toString()?.toInt() ?: 23
-        val flutterTargetSdkVersion = project.findProperty("flutter.targetSdkVersion")?.toString()?.toInt() ?: 34
-        
         minSdk = 24
-        targetSdk = 34
+        // Google Play exige Android 16 (API 36) para novos envios e atualizações.
+        targetSdk = 36
         
         versionCode = flutter.versionCode
         versionName = flutter.versionName
