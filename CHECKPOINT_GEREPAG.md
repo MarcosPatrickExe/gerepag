@@ -2,13 +2,14 @@
 
 > Atualizado em 26 de setembro de 2026. Este documento registra o estado observado do repositório `MarcosPatrickExe/gerepag`, decisões tomadas, bloqueios e pendências. Ele deve ser usado como contexto inicial ao continuar o trabalho em outro chat ou em um Projeto do ChatGPT.
 
-## Atualização de 26/09/2026 — preparação do primeiro AAB assinado
+## Atualização de 26/09/2026 — primeiro AAB assinado pronto para teste interno
 
-- A redefinição da upload key do Google Play foi confirmada: o SHA-1 da nova `upload-keystore.jks` confere com o certificado de upload exibido no Play Console. A chave de assinatura do app gerenciada pelo Google não foi alterada.
+- A redefinição da upload key do Google Play foi confirmada: o SHA-1 da nova keystore externa confere com o certificado de upload exibido no Play Console. A chave de assinatura do app gerenciada pelo Google não foi alterada.
 - O Android foi elevado de `targetSdk` 34 para **36** (Android 16), requisito do Google Play para novos envios e atualizações desde 31/08/2026.
-- O `versionCode` foi incrementado de `1` para `2` (`version: 1.0.0+2`), preparando o próximo AAB para upload sem reutilizar o código anterior.
-- Validações executadas após a alteração: `flutter test --no-pub` com 10 testes aprovados; `flutter build apk --debug --no-pub` concluído. A análise estática continua com os avisos legados documentados.
-- Ainda não há AAB release nem segredo local versionado. Antes do primeiro build assinado, criar `android/key.properties` apenas na máquina, com alias `gerepag-upload`, e manter a keystore fora do Git. O primeiro envio deve ser para a faixa de teste interno, não produção.
+- Foi adotado o padrão de versão `AAAA.MM.N`: a primeira versão de setembro é `2026.09.1`; seu `versionCode` é **3**, maior que o código 2 que já existe na faixa interna.
+- O AAB release `2026.09.1+3` foi gerado localmente e a assinatura foi verificada com `jarsigner` (`jar verified`). Os avisos de cadeia autoassinada são esperados para uma upload key Android e não invalidam o artefato.
+- Validações anteriores: `flutter test --no-pub` com 10 testes aprovados e `flutter build apk --debug --no-pub` concluído. A análise estática continua com os avisos legados documentados.
+- `android/key.properties` e a keystore existem somente na máquina local, são ignorados pelo Git e nunca devem ser enviados ao GitHub. O próximo passo é usar **Teste interno → Criar nova versão** e enviar o AAB; não publicar diretamente em produção.
 
 ## Atualização de 25/09/2026 — política de privacidade no app
 
