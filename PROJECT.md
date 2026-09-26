@@ -80,7 +80,7 @@ Decisão de publicação: reutilizar o app existente no Play Console. O projeto 
 
 ## Build Android assinado
 
-O build release exige `android/key.properties` e uma upload keystore fora do Git. O exemplo está em `android/key.properties.example`. A upload key original foi perdida; uma nova chave externa foi criada e a redefinição foi solicitada no Play Console em 21 de setembro de 2026. Aguarde a ativação antes de enviar artefatos assinados.
+O build release exige `android/key.properties` e uma upload keystore fora do Git. O exemplo está em `android/key.properties.example`. A upload key original foi perdida, mas a chave substituta externa foi ativada no Play Console e seu SHA-1 foi conferido. O AAB assinado `2026.09.1+3` foi validado localmente; o próximo passo é enviá-lo à faixa de teste interno, nunca diretamente à produção.
 
 No GitHub Actions, configure:
 
